@@ -3,6 +3,14 @@ Django 를 작업하면서, 활용도가 높은 부분의 정리와 함께, 추�
 
 * [목차보기](README.md)
 
+## Ubuntu Settings
+### terminal setting
+* [zsh shell](part1/messages.md)
+
+
+### server setting
+
+
 ## Model 파트 I
 
 ### Additional Parts
