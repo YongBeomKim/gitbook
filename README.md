@@ -3,8 +3,9 @@ Django 를 작업 하면서, 일반적인 Document 에 잘 포함되지 않는 �
 
 * [목차보기](README.md)
 
-## Ubuntu Settings
-### terminal setting
+# Ubuntu/ CentOS Settings
+## 1 Terminal Setting
+* [Cent OS Setting](part1/centos.md)
 * [zsh shell](part1/messages.md)
 
 
