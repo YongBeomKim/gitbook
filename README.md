@@ -2,11 +2,13 @@
 Django 를 작업 하면서, 일반적인 Document 에 잘 포함되지 않는 내용들을 정리해 보겠습니다.
 
 * [목차보기](README.md)
+* [Django Server GitBook](https://javafa.gitbooks.io/python-django/content/chapter1.html)
 
-# Ubuntu/ CentOS Settings
-## 1 Terminal Setting
-* [Cent OS Setting](part1/centos.md)
-* [zsh shell](part1/messages.md)
+# Ubuntu/ CentOS Setting
+1. [Cent OS Setting](part1/centos.md)
+
+
+
 
 
 ### server setting
