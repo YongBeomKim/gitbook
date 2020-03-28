@@ -2,6 +2,12 @@
 description: Cent OS 7.7 에서 MySQL 7.7 설치 및 설정 내용을 정리 합니다.
 ---
 
+<figure class="align-center">
+  <img src="{{site.baseurl}}/assets/images/os/mysql_logo.jpg">
+  <figcaption>MySQL Logo</figcaption>
+</figure>
+
+
 # MySQL
 
 가장 보편적인 **MySQL** 을 설치하고 작업합니다.

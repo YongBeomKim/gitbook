@@ -2,9 +2,9 @@
 description: Cent OS 7.7 에서 Nginx 설치 및 설정 내용을 정리 합니다.
 ---
 
-# **[Nginx](https://yongbeomkim.github.io/django/dj-guni-cent/)**
+# **NGINX**
 
-웹서비스를 실행하는 경우 해당 모듈에서 자체지원하는 모듈을 사용하는 방법으로도 실행은 되지만, 분산처리 및 기능의 추가시 더 많은 작업을 필요로 하는 문제가 발생합니다. 이러한 문제를 해결하는데 돕는 Middle Ware 
+블로그에 저장한 내용을 참고하여 정리했습니다. **[Nginx](https://yongbeomkim.github.io/django/dj-guni-cent/)** 
 
 ## nginx 실행하기
 

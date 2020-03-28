@@ -2,11 +2,45 @@
 description: Cent OS 7.7 에서 Terminal Setting 을 정리 합니다.
 ---
 
+<figure class="align-center">
+  <img src="{{site.baseurl}}/assets/images/os/centos_logo.png">
+  <figcaption>Cent OS Logo</figcaption>
+</figure>
+
 # [Cent OS](https://yongbeomkim.github.io/linux/centos-setting/) Setting
 
 1. Python, Nginx, Nvim 등 도구설치
 2. MySQL, MariaDB 설치
 
+## User Setting
+
+```r
+# 사용자 기본암호 변경
+[root@localhost ~]$ passwd root
+새 암호:
+
+[root@localhost ~]$ cat /etc/*release*
+CentOS Linux release 7.7.1908 (Core)
+Derived from Red Hat Enterprise Linux 7.7 (Source)
+NAME="CentOS Linux"
+
+[root@localhost ~]$ getconf LONG_BIT
+64
+```
+
+## User Add & Delete
+
+추가 사용자정보 추가 및 삭제 방법은 다음과 같습니다. 보다 [리눅스](https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4) 에 대한 자세한 내용을 참고하시면 됩니다.
+
+```r
+[root@localhost ~]$ useradd pythonserver
+[root@localhost ~]$ passwd pythonserver
+pythonserver 사용자의 비밀 번호 변경 중
+새  암호: 
+
+[root@localhost ~]$ userdel pythonserver
+[root@localhost ~]$ rm -rf /etc/pythonserver
+```
 
 ## Install Python3
 
