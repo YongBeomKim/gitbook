@@ -49,33 +49,6 @@ pythonserver  ALL=(ALL)   ALL
 [root@localhost ~]$ rm -rf /etc/pythonserver
 ```
 
-## Install Python3
-
-가장 활용도가 높은 **Python 3** 을 **Cent OS** 에서 정의된 기본 버젼을 설치합니다.
-
-```r
-# Install Python 3.6
-yum -y install centos-release-scl
-yum -y install rh-python36
-. /opt/rh/rh-python36/enable # or scl enable rh-python36 bash [if interactive]
-# yum install -y python36u
-# yum install -y python36u-pip
-```
-
-**[특정 버젼](https://computingforgeeks.com/how-to-install-python-on-3-on-centos/)** 을 설치하려면 다음의 내용을 실행 합니다. 버젼 내용을 다르게 변경하려면 `https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz` 의 내용을 **[Python 사이트](https://www.python.org/downloads/)** 에서 검색한 뒤 변경한 내용으로 실행 합니다.
-
-```r
-# 설치 과정에 필요한 의존성 문제를 해결하는 프로그램들 설치 
-yum groupinstall -y "Developent Tools"
-yum -y install openssl-devel bzip2-devel libffi-devel
-
-wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz
-tar xzf Python-3.7.7.tgz
-cd Python-3.7.7
-./configure --enable-optimizations
-make altinstall
-```
-
 ## ZSH, Git, Nginx, [NeoVim](https://github.com/neovim/neovim/wiki/Installing-Neovim) (v10.17.1)
 
 다음의 내용을 스크립트에 포함을 한 뒤, 실행 하면 시스템에서 활용되는 기본적 도구들이 자동으로 설치 됩니다.  
@@ -128,8 +101,93 @@ plugins=(
  history-substring-search
 )
 
-$ souce .zshrc            # 변경된 설정을 적용
+[root@localhost ~]$ souce .zshrc            # 변경된 설정을 적용
 ```
+
+## SQLite3 
+
+sqlite3 설치된 내용을 확인하면 기본 설치된 버젼이 **3.7.17** 입니다. **Django 3** 를 실행하려먼 **sqlite 3.8** 이상의 버젼을 필요로 하는 오류를 출력합니다.
+
+```python
+raise ImproperlyConfigured('SQLite 3.8.3 or later is required (found %s).' % Database.sqlite_version)
+```
+
+이러한 문제를 해결하는 작업순서는 아래와 같습니다.
+
+1. sqlite3 를 먼저 설치를 하고 확인 합니다.
+2. Python 을 원하는 버젼으로 설치 합니다.
+3. 작업이 완료된 뒤 Python 에서 sqlite 호출 내용을 확인 합니다.
+
+우선 Python 에서 설치 및 호출 내용을 확인 합니다.
+
+```r
+Python 3.7.7 (default) 
+>>> import _sqlite3
+>>> _sqlite3.sqlite_version
+'3.7.17'
+```
+
+새로 설치하기 전에 기존에 설치된 내용을 제대로 삭제작업을 진행 합니다. 완전히 지우지 않으면 호출시 내용의 충돌이 생겨서 문제가 계속 발생 합니다.
+
+```r
+# 먼저 설치된 sqlite3 를 삭제 합니다.
+[root@localhost ~]$ yum erase 'sqlite*'
+
+[root@localhost ~]$ whereis sqlite3
+sqlite3: /usr/local/bin/sqlite3
+[root@localhost ~]$ rm /usr/local/bin/sqlite3 
+
+[root@localhost ~]$ whereis libsqlite3 
+libsqlite3: /usr/local/lib/libsqlite3.la /usr/local/lib/libsqlite3.a /usr/local/lib/libsqlite3.so
+
+[root@localhost ~]$ rm /usr/local/lib/libsqlite3.* 
+[root@localhost ~]$ whereis libsqlite3             
+libsqlite3:#  
+```
+
+
+
+```r
+wget https://kojipkgs.fedoraproject.org/packages/sqlite/3.9.0/1.fc21/x86_64/sqlite-devel-3.9.0-1.fc21.x86_64.rpm
+
+wget https://kojipkgs.fedoraproject.org/packages/sqlite/3.9.0/1.fc21/x86_64/sqlite-3.9.0-1.fc21.x86_64.rpm
+
+yum install sqlite-3.9.0-1.fc21.x86_64.rpm sqlite-devel-3.9.0-1.fc21.x86_64.rpm
+
+sqlite3 --version
+```
+
+## Install Python3
+
+가장 활용도가 높은 **Python 3** 을 **Cent OS** 에서 정의된 기본 버젼을 설치합니다.
+
+```r
+# Install Python 3.6
+yum -y install centos-release-scl
+yum -y install rh-python36
+. /opt/rh/rh-python36/enable # or scl enable rh-python36 bash [if interactive]
+# yum install -y python36u
+# yum install -y python36u-pip
+```
+
+**[특정 버젼](https://computingforgeeks.com/how-to-install-python-on-3-on-centos/)** 을 설치하려면 다음의 내용을 실행 합니다. 버젼 내용을 다르게 변경하려면 `https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz` 의 내용을 **[Python 사이트](https://www.python.org/downloads/)** 에서 검색한 뒤 변경한 내용으로 실행 합니다.
+
+```r
+# 설치 과정에 필요한 의존성 문제를 해결하는 프로그램들 설치 
+yum groupinstall -y "Developent Tools"
+yum -y install openssl-devel bzip2-devel libffi-devel
+
+wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz
+tar xzf Python-3.7.7.tgz
+cd Python-3.7.7
+./configure --enable-optimizations
+make altinstall
+```
+
+## "ModuleNotFoundError: No module named '_sqlite3'"
+
+
+
 
 ## Node Version Manager (nvm)
 

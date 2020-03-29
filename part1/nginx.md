@@ -32,6 +32,16 @@ nginx version: nginx/1.17.6
 tcp   0   0 0.0.0.0:80   0.0.0.0:*   LISTEN  30221/nginx: master 
 
 [root@localhost ~]$ curl -i http://localhost
+<!Document>
+<head><link>...
 ```
 
 ## Django & Gunicorn 연결
+
+
+
+  File "/usr/local/lib/python3.7/sqlite3/dbapi2.py", line 27, in <module>
+    from _sqlite3 import *
+ModuleNotFoundError: No module named '_sqlite3'
+
+
