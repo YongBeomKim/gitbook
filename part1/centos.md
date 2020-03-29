@@ -4,7 +4,7 @@ description: Cent OS 7.7 에서 Terminal Setting 을 정리 합니다.
 
 <figure class="align-center">
   <img src="{{site.baseurl}}/assets/images/os/centos_logo.png">
-  <figcaption>Cent OS Logo</figcaption>
+  <figcaption></figcaption>
 </figure>
 
 # [Cent OS](https://yongbeomkim.github.io/linux/centos-setting/) Setting
@@ -43,11 +43,6 @@ pythonserver 사용자의 비밀 번호 변경 중
 ```
 
 ## Install Python3
-
-<figure class="align-center">
-  <img src="{{site.baseurl}}/assets/images/os/python_logo.jpg">
-  <figcaption>Python Logo</figcaption>
-</figure>
 
 가장 활용도가 높은 **Python 3** 을 **Cent OS** 에서 정의된 기본 버젼을 설치합니다.
 

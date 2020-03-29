@@ -2,6 +2,12 @@
 description: Cent OS 7.7 에서 Nginx 설치 및 설정 내용을 정리 합니다.
 ---
 
+<figure class="align-center">
+  <img src="{{site.baseurl}}/assets/images/server/nginx_gunicorn.jpg">
+  <figcaption></figcaption>
+</figure>
+
+
 # **NGINX**
 
 블로그에 저장한 내용을 참고하여 정리했습니다. **[Nginx](https://yongbeomkim.github.io/django/dj-guni-cent/)** 
