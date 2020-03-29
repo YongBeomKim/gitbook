@@ -33,11 +33,18 @@ NAME="CentOS Linux"
 추가 사용자정보 추가 및 삭제 방법은 다음과 같습니다. 보다 [리눅스](https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4) 에 대한 자세한 내용을 참고하시면 됩니다.
 
 ```r
+# 새로운 사용자 계정 추가
 [root@localhost ~]$ useradd pythonserver
 [root@localhost ~]$ passwd pythonserver
 pythonserver 사용자의 비밀 번호 변경 중
 새  암호: 
 
+# 사용자의 권한범위 설정
+[root@localhost ~]$ sudo visudo
+root    ALL=(ALL)   ALL 
+pythonserver  ALL=(ALL)   ALL 
+
+# 사용자 자료 제거
 [root@localhost ~]$ userdel pythonserver
 [root@localhost ~]$ rm -rf /etc/pythonserver
 ```
