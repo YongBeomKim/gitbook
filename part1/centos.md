@@ -40,7 +40,7 @@ pythonserver 사용자의 비밀 번호 변경 중
 새  암호: 
 
 # 사용자의 권한범위 설정
-[root@localhost ~]$ sudo visudo
+[root@localhost ~]$ visudo
 root    ALL=(ALL)   ALL 
 pythonserver  ALL=(ALL)   ALL 
 
@@ -76,9 +76,11 @@ cd Python-3.7.7
 make altinstall
 ```
 
-## [ZSH](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes), Git, Nginx, Node.js, [NeoVim](https://github.com/neovim/neovim/wiki/Installing-Neovim) (v10.17.1)
+## ZSH, Git, Nginx, [NeoVim](https://github.com/neovim/neovim/wiki/Installing-Neovim) (v10.17.1)
 
 다음의 내용을 스크립트에 포함을 한 뒤, 실행 하면 시스템에서 활용되는 기본적 도구들이 자동으로 설치 됩니다.  
+
+zsh 는 설치 후 **[zsh-theme](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes)** 의 변경 및 **Plug In 기능** 을 추가 후 재가동 합니다. 
 
 ```r
 # Install Git
@@ -89,15 +91,15 @@ yum install -y libxml2-devel libxml2-static libxslt libxslt-devel gd gd-devel
 wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-1.17.6-1.el7.ngx.x86_64.rpm
 yum localinstall nginx-1.17.6-1.el7.ngx.x86_64.rpm
 
-# Install Node.js
-curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
-yum install nodejs
-
 # Install SQlite 3.8
 wget http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/atomic-sqlite-sqlite-3.8.5-3.el7.art.x86_64.rpm
 yum localinstall atomic-sqlite-sqlite-3.8.5-3.el7.art.x86_64.rpm
 mv /lib64/libsqlite3.so.0.8.6{,-3.17}
 cp /opt/atomic/atomic-sqlite/root/usr/lib64/libsqlite3.so.0.8.6 /lib64
+
+# Neovim (CentOS 7 / RHEL 7)
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install -y neovim python3-neovim
 
 # Install ZSH
 yum -y install zsh
@@ -107,28 +109,50 @@ sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/to
 
 cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 source ~/.zshrc
-git clone https://github.com/zsh-users/zsh-autosuggestions
-
-# Neovim (CentOS 7 / RHEL 7)
-yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install -y neovim python3-neovim
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 ```
 
 위 내용으로 설치를 한 뒤, bash shell 에 다음의 내용들을 추가 합니다.
 
 ```r
-$ vi /root/.bashrc
-  alias python3="/usr/bin/python3.6"
+[root@localhost ~]$ vi /root/.bashrc
+alias python3="/usr/bin/python3.6"
 
-$ nvim ~/.zshrc
-  ZSH_THEME="agnoster"      # 테마를 정의한다
-  export LANG="ko_KR.UTF-8" # 한글 인코딩을 해결
-  plugins=(
-    git
-    zsh-autosuggestions
-    #zsh-syntax-highlighting
-    history-substring-search
-  )
+[root@localhost ~]$ nvim ~/.zshrc
+ZSH_THEME="agnoster"      # 테마를 정의한다
+export LANG="ko_KR.UTF-8" # 한글 인코딩을 해결
+plugins=(
+ git
+ zsh-autosuggestions
+ #zsh-syntax-highlighting
+ history-substring-search
+)
 
 $ souce .zshrc            # 변경된 설정을 적용
+```
+
+## Node Version Manager (nvm)
+
+[NVM](https://github.com/nvm-sh/nvm#installing-nvm-on-alpine-linux) 의 공식문서로 작업 중 문제가 발생시 참고를 하면 됩니다.
+
+**node.js** 는 자바스크립트 모듈을 실행하는데 활용하는 프로그램으로 버젼을 다르게 테스트할 필요가 을때 활용 합니다. 아래의 예제는 설치 후 10.17.0 버젼의 **node.js** 를 설치하는 과정 입니다.
+
+```r
+# bash terminal 에서 설치시
+[root@localhost ~]$ curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+
+# zsh terminal 에서 설치시
+[root@localhost ~]$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | zsh
+
+[root@localhost ~]$ nvm --version
+0.35.1
+
+[root@localhost ~]$ nvm ls-remote | grep "v10.*LTS"
+v10.18.0   (LTS: Dubnium)
+v10.18.1   (LTS: Dubnium)
+v10.19.0   (Latest LTS: Dubnium)
+
+[root@localhost ~]$ nvm install 10.17.0
+[root@localhost ~]$ node -v
+v10.17.0
 ```
