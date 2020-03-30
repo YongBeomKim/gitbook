@@ -20,6 +20,8 @@ sqlite3 를 업데이트 하는 과정이 필요 합니다. [SQLite Download, In
 You may end up receiving a **"SQLite header and source version mismatch"** error message after you finished installation if you run `./configure` command.
  To avoid this you may run the following `./configure` command
 
+[myFile.js test.sh]("{{site.baseurl}}/assets/downloads/sh/test.sh")
+
 [myFile.js]({{file name="{{site.baseurl}}/assets/downloads/sh/test.sh"}})
 
 [myFile.js]({{file name='myFile.js'}})
