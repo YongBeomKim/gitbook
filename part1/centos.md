@@ -49,6 +49,37 @@ pythonserver  ALL=(ALL)   ALL
 [root@localhost ~]$ rm -rf /etc/pythonserver
 ```
 
+## SQLite3 Upgrade
+
+```r
+# Install Depandency Program
+yum -y install gcc
+
+# Sqlite update
+wget https://www.sqlite.org/2020/sqlite-autoconf-3310100.tar.gz
+tar -xzvf sqlite-autoconf-3310100.tar.gz
+cd sqlite-autoconf-3310100
+./configure --prefix=/usr/local
+# ./configure --prefix=$HOME/opt/sqlite
+# ./configure --prefix=/usr/local
+
+make && make install
+```
+
+설치 후, 환결설정값에 `export LD_LIBRARY_PATH="/usr/local/lib"` 를 추가하면 제대로 작동이 됩니다. 대신 `/usr/local/lib` 를 실행하면 발생하는 오류는 추후에 보완하도록 합니다.
+
+```r
+# vi /etc/rc.d/rc.local 에 추가하면 적용되지 않았습니다
+[root@webserver01 ~]$ vi .bash_profile 
+export LD_LIBRARY_PATH="/usr/local/lib"
+
+[root@webserver01 ~]$ /usr/bin/sqlite3 
+SQLite header and source version mismatch
+2020-01-27 19:55:54 3bfa9cc97da10598521b342961df8f5f68c7388fa117345eeb516eaa837bb4d6
+2013-05-20 00:56:22 118a3b35693b134d56ebd780123b7fd6f1497668
+```
+
+
 ## ZSH, Git, Nginx, [NeoVim](https://github.com/neovim/neovim/wiki/Installing-Neovim) (v10.17.1)
 
 다음의 내용을 스크립트에 포함을 한 뒤, 실행 하면 시스템에서 활용되는 기본적 도구들이 자동으로 설치 됩니다.  
@@ -59,16 +90,11 @@ zsh 는 설치 후 **[zsh-theme](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes)
 # Install Git
 yum install git
 
-# Install Nginx
+# Install Nginx : 링크서 최신버젼 확인하기
+# http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/
 yum install -y libxml2-devel libxml2-static libxslt libxslt-devel gd gd-devel
-wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-1.17.6-1.el7.ngx.x86_64.rpm
-yum localinstall nginx-1.17.6-1.el7.ngx.x86_64.rpm
-
-# Install SQlite 3.8
-wget http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/atomic-sqlite-sqlite-3.8.5-3.el7.art.x86_64.rpm
-yum localinstall atomic-sqlite-sqlite-3.8.5-3.el7.art.x86_64.rpm
-mv /lib64/libsqlite3.so.0.8.6{,-3.17}
-cp /opt/atomic/atomic-sqlite/root/usr/lib64/libsqlite3.so.0.8.6 /lib64
+wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-1.17.9-1.el7.ngx.x86_64.rpm 
+yum localinstall nginx-1.17.9-1.el7.ngx.x86_64.rpm 
 
 # Neovim (CentOS 7 / RHEL 7)
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -194,6 +220,26 @@ tar xzf Python-3.7.7.tgz
 cd Python-3.7.7
 ./configure --enable-optimizations
 make altinstall
+```
+
+
+```r
+z
+export PATH=$HOME/opt/sqlite/bin:$PATH
+
+export PATH=$HOME/opt/sqlite/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/opt/sqlite/lib
+export LD_RUN_PATH=$HOME/opt/sqlite/lib
+
+
+
+export LD_LIBRARY_PATH="/usr/local/lib"
+export PATH=$HOME/opt/sqlite/bin:$PATH
+
+export PATH=$HOME/opt/sqlite/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/opt/sqlite/lib
+export LD_RUN_PATH=$HOME/opt/sqlite/lib
+
 ```
 
 ## "ModuleNotFoundError: No module named '_sqlite3'"

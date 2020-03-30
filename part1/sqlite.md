@@ -26,18 +26,35 @@ You may end up receiving a **"SQLite header and source version mismatch"** error
 
 [myFile.js]({{file name='myFile.js'}})
 
+## Django and SQLite
+
+[Django2.2 & SQlite3](http://www.djaodjin.com/blog/django-2-2-with-sqlite-3-on-centos-7.blog.html)
+
+[Sqlite Upgrade](https://stackoverflow.com/questions/55674176/django-cant-find-new-sqlite-version-sqlite-3-8-3-or-later-is-required-found)
+
 
 
 ```r
-[root@localhost ~]$ wget https://www.sqlite.org/2020/sqlite-autoconf-3310100.tar.gz
+# install depedancey
+yum -y install gcc
 
-[root@localhost ~]$ tar -xzvf sqlite-autoconf-3310100.tar.gz
-
-[root@localhost ~/sqlite-autoconf-3310100]$ ./configure --disable-dynamic-extensions --enable-static --disable-shared
-
-[root@localhost ~/sqlite-autoconf-3310100]$ make
-[root@localhost ~/sqlite-autoconf-3310100]$ make install
+# sqlite update
+wget https://www.sqlite.org/2020/sqlite-autoconf-3310100.tar.gz
+tar -xzvf sqlite-autoconf-3310100.tar.gz
+cd sqlite-autoconf-3310100
+./configure --prefix=/usr/local
+# ./configure --prefix=$HOME/opt/sqlite
+# ./configure --prefix=/usr/local
+make && make install
 ```
+
+
+$ wget https://www.sqlite.org/2018/sqlite-autoconf-3240000.tar.gz
+$ tar zxvf sqlite-autoconf-3240000.tar.gz
+$ ./configure --prefix=/usr/local
+$ ./configure --disable-dynamic-extensions --enable-static --disable-shared
+$ make
+$ sudo make install
 
 
 
