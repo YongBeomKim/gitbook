@@ -1,116 +1,43 @@
 ---
-description: Cent OS 7.7 에서 Terminal Setting 을 정리 합니다.
+description: Cent OS 7.7 에서 Sqlite Setting 을 정리 합니다.
 ---
 
 <figure class="align-center">
-  <img src="{{site.baseurl}}/assets/images/os/centos_logo.png">
+  <img src="{{site.baseurl}}/assets/images/os/sqlite_banner.jpg">
   <figcaption></figcaption>
 </figure>
 
-# [Cent OS](https://yongbeomkim.github.io/linux/centos-setting/) Setting
+# SQLite3
 
-1. Python, Nginx, Nvim 등 도구설치
-2. MySQL, MariaDB 설치
-
-## User Setting
-
-```r
-# 사용자 기본암호 변경
-[root@localhost ~]$ passwd root
-새 암호:
-
-[root@localhost ~]$ cat /etc/*release*
-CentOS Linux release 7.7.1908 (Core)
-Derived from Red Hat Enterprise Linux 7.7 (Source)
-NAME="CentOS Linux"
-
-[root@localhost ~]$ getconf LONG_BIT
-64
-```
-
-## User Add & Delete
-
-추가 사용자정보 추가 및 삭제 방법은 다음과 같습니다. 보다 [리눅스](https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4) 에 대한 자세한 내용을 참고하시면 됩니다.
-
-```r
-# 새로운 사용자 계정 추가
-[root@localhost ~]$ useradd pythonserver
-[root@localhost ~]$ passwd pythonserver
-pythonserver 사용자의 비밀 번호 변경 중
-새  암호: 
-
-# 사용자의 권한범위 설정
-[root@localhost ~]$ visudo
-root    ALL=(ALL)   ALL 
-pythonserver  ALL=(ALL)   ALL 
-
-# 사용자 자료 제거
-[root@localhost ~]$ userdel pythonserver
-[root@localhost ~]$ rm -rf /etc/pythonserver
-```
-
-## ZSH, Git, Nginx, [NeoVim](https://github.com/neovim/neovim/wiki/Installing-Neovim) (v10.17.1)
-
-다음의 내용을 스크립트에 포함을 한 뒤, 실행 하면 시스템에서 활용되는 기본적 도구들이 자동으로 설치 됩니다.  
-
-zsh 는 설치 후 **[zsh-theme](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes)** 의 변경 및 **Plug In 기능** 을 추가 후 재가동 합니다. 
-
-```r
-# Install Git
-yum install git
-
-# Install Nginx
-yum install -y libxml2-devel libxml2-static libxslt libxslt-devel gd gd-devel
-wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-1.17.6-1.el7.ngx.x86_64.rpm
-yum localinstall nginx-1.17.6-1.el7.ngx.x86_64.rpm
-
-# Install SQlite 3.8
-wget http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/atomic-sqlite-sqlite-3.8.5-3.el7.art.x86_64.rpm
-yum localinstall atomic-sqlite-sqlite-3.8.5-3.el7.art.x86_64.rpm
-mv /lib64/libsqlite3.so.0.8.6{,-3.17}
-cp /opt/atomic/atomic-sqlite/root/usr/lib64/libsqlite3.so.0.8.6 /lib64
-
-# Neovim (CentOS 7 / RHEL 7)
-yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install -y neovim python3-neovim
-
-# Install ZSH
-yum -y install zsh
-cd ~
-chsh -s /bin/zsh root
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-
-cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-source ~/.zshrc
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-```
-
-위 내용으로 설치를 한 뒤, bash shell 에 다음의 내용들을 추가 합니다.
-
-```r
-[root@localhost ~]$ vi /root/.bashrc
-alias python3="/usr/bin/python3.6"
-
-[root@localhost ~]$ nvim ~/.zshrc
-ZSH_THEME="agnoster"      # 테마를 정의한다
-export LANG="ko_KR.UTF-8" # 한글 인코딩을 해결
-plugins=(
- git
- zsh-autosuggestions
- #zsh-syntax-highlighting
- history-substring-search
-)
-
-[root@localhost ~]$ souce .zshrc            # 변경된 설정을 적용
-```
-
-## SQLite3 
-
-sqlite3 설치된 내용을 확인하면 기본 설치된 버젼이 **3.7.17** 입니다. **Django 3** 를 실행하려먼 **sqlite 3.8** 이상의 버젼을 필요로 하는 오류를 출력합니다.
+Cent OS 에서 기본 설치된 버젼은 **3.7.17** 입니다. **Django 2.2** 를 설치 후 실행을 하면 sqlite 의 버젼을 확인하는 다음의 코드가 추가되어 있습니다.
 
 ```python
 raise ImproperlyConfigured('SQLite 3.8.3 or later is required (found %s).' % Database.sqlite_version)
 ```
+
+sqlite3 를 업데이트 하는 과정이 필요 합니다. [SQLite Download, Installation and Getting started](https://www.w3resource.com/sqlite/sqlite-download-installation-getting-started.php)
+
+You may end up receiving a **"SQLite header and source version mismatch"** error message after you finished installation if you run `./configure` command.
+ To avoid this you may run the following `./configure` command
+
+[myFile.js]({{file name="{{site.baseurl}}/assets/downloads/sh/test.sh"}})
+
+[myFile.js]({{file name='myFile.js'}})
+
+
+
+```r
+[root@localhost ~]$ wget https://www.sqlite.org/2020/sqlite-autoconf-3310100.tar.gz
+
+[root@localhost ~]$ tar -xzvf sqlite-autoconf-3310100.tar.gz
+
+[root@localhost ~/sqlite-autoconf-3310100]$ ./configure --disable-dynamic-extensions --enable-static --disable-shared
+
+[root@localhost ~/sqlite-autoconf-3310100]$ make
+[root@localhost ~/sqlite-autoconf-3310100]$ make install
+```
+
+
 
 이러한 문제를 해결하는 작업순서는 아래와 같습니다.
 

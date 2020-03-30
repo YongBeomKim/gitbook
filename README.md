@@ -6,8 +6,9 @@ Django 를 작업 하면서, 일반적인 Document 에 잘 포함되지 않는 �
 
 # Ubuntu/ CentOS Setting
 1. [Cent OS Setting](part1/centos.md)
-2. [MySQL Setting](part1/mysql.md)
-3. [Nginx Setting](part1/nginx.md)
+2. [SQLite3 Updating](part1/sqlite.md)
+3. [MySQL Setting](part1/mysql.md)
+4. [Nginx Setting](part1/nginx.md)
 
 
 
