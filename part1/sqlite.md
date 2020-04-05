@@ -9,6 +9,8 @@ description: Cent OS 7.7 에서 Sqlite Setting 을 정리 합니다.
 
 # SQLite3
 
+`nvim /root/.bashrc`
+
 Cent OS 에서 기본 설치된 버젼은 **3.7.17** 입니다. **Django 2.2** 를 설치 후 실행을 하면 sqlite 의 버젼을 확인하는 다음의 코드가 추가되어 있습니다.
 
 ```python
@@ -17,22 +19,17 @@ raise ImproperlyConfigured('SQLite 3.8.3 or later is required (found %s).' % Dat
 
 sqlite3 를 업데이트 하는 과정이 필요 합니다. [SQLite Download, Installation and Getting started](https://www.w3resource.com/sqlite/sqlite-download-installation-getting-started.php)
 
-You may end up receiving a **"SQLite header and source version mismatch"** error message after you finished installation if you run `./configure` command.
- To avoid this you may run the following `./configure` command
+You may end up receiving a **"SQLite header and source version mismatch"** error message after you finished installation if you run `./configure` command. To avoid this you may run the following `./configure` command
 
 [myFile.js test from github](https://raw.githubusercontent.com/YongBeomKim/gitbook/gh-pages/assets/downloads/sh/test.sh)
 
-[myFile.js test.sh]("{{site.baseurl}}/assets/downloads/sh/test.sh")
-
-[myFile.js]({{file name='myFile.js'}})
+[myFile.js test.sh]({{site.baseurl}}/assets/downloads/sh/test.sh)
 
 ## Django and SQLite
 
 [Django2.2 & SQlite3](http://www.djaodjin.com/blog/django-2-2-with-sqlite-3-on-centos-7.blog.html)
 
 [Sqlite Upgrade](https://stackoverflow.com/questions/55674176/django-cant-find-new-sqlite-version-sqlite-3-8-3-or-later-is-required-found)
-
-
 
 ```r
 # install depedancey

@@ -49,6 +49,33 @@ pythonserver  ALL=(ALL)   ALL
 [root@localhost ~]$ rm -rf /etc/pythonserver
 ```
 
+## Python3 Install 
+
+가장 활용도가 높은 **Python 3** 을 **Cent OS** 에서 정의된 기본 버젼을 설치하는 방법은 다음과 같습니다.
+
+```r
+# Install Python 3.6
+yum -y install centos-release-scl
+yum -y install rh-python36
+. /opt/rh/rh-python36/enable # or scl enable rh-python36 bash [if interactive]
+# yum install -y python36u
+# yum install -y python36u-pip
+```
+
+서버 운영과 목적에 따라 **[특정 버젼](https://computingforgeeks.com/how-to-install-python-on-3-on-centos/)** 을 설치하는 경우에는 다음의 내용을 따라서 실행 합니다. 버젼 `https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz` 내용은 **[Python 사이트](https://www.python.org/downloads/)** 에서 검색을 하면서 버젼을 찾아서 적용하면 됩니다.
+
+```r
+# 설치 과정에 필요한 의존성 문제를 해결하는 프로그램들 설치 
+yum groupinstall -y "Developent Tools"
+yum -y install openssl-devel bzip2-devel libffi-devel
+
+wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz
+tar xzf Python-3.7.7.tgz
+cd Python-3.7.7
+./configure --enable-optimizations
+make altinstall
+```
+
 ## SQLite3 Upgrade
 
 ```r
@@ -69,8 +96,9 @@ make && make install
 설치 후, 환결설정값에 `export LD_LIBRARY_PATH="/usr/local/lib"` 를 추가하면 제대로 작동이 됩니다. 대신 `/usr/local/lib` 를 실행하면 발생하는 오류는 추후에 보완하도록 합니다.
 
 ```r
-# vi /etc/rc.d/rc.local 에 추가하면 적용되지 않았습니다
-[root@webserver01 ~]$ vi .bash_profile 
+# /root/.bashrc 에 등록하면 Booting 시 자동 실행 됩니다.
+# vi /etc/rc.d/rc.local 에서는 미실행
+[root@webserver01 ~]$ vi /root/.bashrc 
 export LD_LIBRARY_PATH="/usr/local/lib"
 
 [root@webserver01 ~]$ /usr/bin/sqlite3 
@@ -115,7 +143,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 
 ```r
 [root@localhost ~]$ vi /root/.bashrc
-alias python3="/usr/bin/python3.6"
+alias python3="/usr/bin/python3.7"
 
 [root@localhost ~]$ nvim ~/.zshrc
 ZSH_THEME="agnoster"      # 테마를 정의한다
@@ -130,21 +158,13 @@ plugins=(
 [root@localhost ~]$ souce .zshrc            # 변경된 설정을 적용
 ```
 
-## SQLite3 
-
-sqlite3 설치된 내용을 확인하면 기본 설치된 버젼이 **3.7.17** 입니다. **Django 3** 를 실행하려먼 **sqlite 3.8** 이상의 버젼을 필요로 하는 오류를 출력합니다.
+## SQLite3
 
 ```python
 raise ImproperlyConfigured('SQLite 3.8.3 or later is required (found %s).' % Database.sqlite_version)
 ```
 
-이러한 문제를 해결하는 작업순서는 아래와 같습니다.
-
-1. sqlite3 를 먼저 설치를 하고 확인 합니다.
-2. Python 을 원하는 버젼으로 설치 합니다.
-3. 작업이 완료된 뒤 Python 에서 sqlite 호출 내용을 확인 합니다.
-
-우선 Python 에서 설치 및 호출 내용을 확인 합니다.
+**Django 2.2.9** 이후 부터는 **sqlite 3.8** 이상인지를 확인하는 코드가 포함되어 있습니다. 때문에 기본 버젼인 **sqlite 3.7.17** 에서는 오류를 출력합니다.
 
 ```r
 Python 3.7.7 (default) 
@@ -152,6 +172,24 @@ Python 3.7.7 (default)
 >>> _sqlite3.sqlite_version
 '3.7.17'
 ```
+
+이러한 문제를 해결하는 작업순서는 아래와 같습니다.
+
+1. sqlite3 를 설치를 하고 확인 합니다.
+2. .bashrc , .zshrc 등의 실행환경에 설치된 내용을 `export` 로 연결합니다.
+3. 파이썬을 실행하여 연결된 내용의 실행을 확인 합니다.
+
+자세한 내용은 sqlite 별도 페이지를 참고 합니다.
+
+
+
+
+
+
+
+
+우선 Python 에서 설치 및 호출 내용을 확인 합니다.
+
 
 새로 설치하기 전에 기존에 설치된 내용을 제대로 삭제작업을 진행 합니다. 완전히 지우지 않으면 호출시 내용의 충돌이 생겨서 문제가 계속 발생 합니다.
 
@@ -195,32 +233,7 @@ https://www.sqlite.org/2020/sqlite-autoconf-3310100.tar.gz
 
 
 
-## Install Python3
 
-가장 활용도가 높은 **Python 3** 을 **Cent OS** 에서 정의된 기본 버젼을 설치합니다.
-
-```r
-# Install Python 3.6
-yum -y install centos-release-scl
-yum -y install rh-python36
-. /opt/rh/rh-python36/enable # or scl enable rh-python36 bash [if interactive]
-# yum install -y python36u
-# yum install -y python36u-pip
-```
-
-**[특정 버젼](https://computingforgeeks.com/how-to-install-python-on-3-on-centos/)** 을 설치하려면 다음의 내용을 실행 합니다. 버젼 내용을 다르게 변경하려면 `https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz` 의 내용을 **[Python 사이트](https://www.python.org/downloads/)** 에서 검색한 뒤 변경한 내용으로 실행 합니다.
-
-```r
-# 설치 과정에 필요한 의존성 문제를 해결하는 프로그램들 설치 
-yum groupinstall -y "Developent Tools"
-yum -y install openssl-devel bzip2-devel libffi-devel
-
-wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz
-tar xzf Python-3.7.7.tgz
-cd Python-3.7.7
-./configure --enable-optimizations
-make altinstall
-```
 
 
 ```r
