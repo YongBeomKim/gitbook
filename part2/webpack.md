@@ -77,6 +77,16 @@ STATICFILES_DIRS = [
 ~/mysite/static $ yarn init -y  # 빠르게 환경설정 할 때
 # webpack 모듈의 설치
 ~/mysite/static $ yarn add webpack webpack-cli
+~/mysite/static $ tree -d -L 3           
+.
+├── app
+│   └── templates
+├── server
+└── static
+    ├── css
+    ├── js
+    └── node_modules
+        ├── @webassemblyjs
 ```
 
 <br/>
@@ -110,7 +120,65 @@ webpack 을 사용한 build 파일을 만들기 위한 **$ yarn build** 의 실�
 "build": "webpack --config webpack.config.js"
 ```
 
-빌드하는 파일에 대해서는 **webpack.config.js** 에서 내용을 정의하면 됩니다. 이 파일은 **Webpack** 의 설정 파일이고, 내용 작성에 있어서 주의할 점 몇가지를 유념해야 합니다. 구체적으로는 주석은 `{* *}` 을 사용하고, 경로는 `./js/index.js` 와 같이 **상대경로를 사용** 해야 한다는 점 등이 있습니다.
+### **Webpack.config.js**
+
+Webpack 으로 빌드하는 파일 정보는 **webpack.config.js** 에서 정의 합니다. 이 파일은 **Webpack** 의 설정 파일로 주석은 `{* *}` 을 사용하고, 경로는 `./js/index.js` 와 같이 **상대경로를 사용** 해야 한다는 점 등에 유의 합니다.
+
+이제 가장 간단한 내용에 대한 설정값 내용들을 살펴 보겠습니다
+
+```r
+module.exports = {
+    mode: 'development',
+    entry: {
+        app: './static/js/index.js'
+    },
+    output: {
+        filename: '[name].bundle.js',
+    },
+}
+```
+
+구체적인 build 대상과, 생성자를 정의한 뒤, `$ yarn build` 작업을 실행하면 `./dist/app.bundle.js` 파일이 생성됨을 알 수 있습니다.
+
+```r
+~/mysite/static $ yarn build
+yarn run v1.21.1
+Asset           Size  Chunks  Chunk  Names
+app.bundle.js  3.98   KiB     app    [emitted]  app
+Entrypoint app = app.bundle.js
+Done in 0.40s.
+```
+
+build 로 생성된 bundle 파일은 Django 의 `settings.py` 에서 Static 설정값에 './dist' 경로를 추가 합니다.
+
+```python
+# settings.py
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    # os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static/dist'),
+]
+```
+
+그리고 이에 맞춰서 Django Template 의 내용을 변경하면 됩니다.
+
+{% raw %}
+```html
+<body>
+<script src="{% static 'app.bundle.js' %}"></script>
+</body>
+```
+{% end raw %}
+
+<br/>
+
+## **Adding the JavaScript Modules**
+
+
+
+
+
+
 
 ### **yarn add -D  모듈이름**
 
