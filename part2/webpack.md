@@ -147,6 +147,19 @@ Asset           Size  Chunks  Chunk  Names
 app.bundle.js  3.98   KiB     app    [emitted]  app
 Entrypoint app = app.bundle.js
 Done in 0.40s.
+~/mysite/static $ tree -d -L 3           
+.
+├── app
+│   └── templates
+├── server
+└── static
+    ├── css
+    ├── dist
+    ├── js
+    └── node_modules
+        ├── @webassemblyjs
+        ├── @xtuc
+```
 ```
 
 build 로 생성된 bundle 파일은 Django 의 `settings.py` 에서 Static 설정값에 './dist' 경로를 추가 합니다.
@@ -160,7 +173,7 @@ STATICFILES_DIRS = [
 ]
 ```
 
-그리고 이에 맞춰서 Django Template 의 내용을 변경하면 됩니다.
+그리고 이에 맞춰서 Django Template 의 내용을 변경하면 됩니다. 그리고 실행하면 빌드 파일이 자연스럽게 Django 의 Template 문법과 어울리면서 작동 되는 모습을 보실 수 있습니다.
 
 {% raw %}
 ```html
@@ -172,15 +185,9 @@ STATICFILES_DIRS = [
 
 <br/>
 
-## **Adding the JavaScript Modules**
+## **Adding the JavaScript Node Modules**
 
-
-
-
-
-
-
-### **yarn add -D  모듈이름**
+### **Install Node Modules**
 
 ```r
 ~/mysite/static $ yarn add -D react react-dom prop-types
@@ -239,33 +246,9 @@ module.exports = {
 ```
 
 
-```r
-# build 를 실행하면 빌드된 내용이 출력됩니다.
-~/mysite/static $ yarn build
-yarn run v1.21.1
-Built at: 2020-04-10 7:29:34 PM
-  Asset    Size       Chunks   Chunk      Names
-  main.js  3.98 KiB   main     [emitted]  main
-Done in 0.38s.
-
-~/mysite/static $ tree -d -L 3           
-.
-├── app
-│   └── templates
-├── server
-└── static
-    ├── css
-    ├── dist
-    ├── js
-    └── node_modules
-        ├── @webassemblyjs
-        ├── @xtuc
-```
-
 <br/>
 
 ## **React.js**
-
 
 ### **Static with Django & Webpack**
 
