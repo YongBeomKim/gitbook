@@ -175,13 +175,11 @@ STATICFILES_DIRS = [
 
 그리고 이에 맞춰서 Django Template 의 내용을 변경하면 됩니다. 그리고 실행하면 빌드 파일이 자연스럽게 Django 의 Template 문법과 어울리면서 작동 되는 모습을 보실 수 있습니다.
 
-{% raw %}
 ```html
-<body>
+{% raw %}
 <script src="{% static 'app.bundle.js' %}"></script>
-</body>
+{% endraw %}
 ```
-{% end raw %}
 
 <br/>
 
