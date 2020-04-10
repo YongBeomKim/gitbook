@@ -10,7 +10,8 @@ Django 를 작업 하면서, 일반적인 Document 에 잘 포함되지 않는 �
 3. [MySQL Setting](part1/mysql.md)
 4. [Nginx Setting](part1/nginx.md)
 
-
+# Django Setting
+1. [WebPack in the Django](part2/webpack.md)
 
 
 
