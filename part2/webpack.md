@@ -7,9 +7,9 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
   <figcaption></figcaption>
 </figure>
 
-# **Django & webpack**
+## **Django & webpack**
 
-## **Introduction**
+### **Introduction**
 
 **React.js 를 포함하는 Django Project 환경구성** 이 이번의 목표 입니다. Django 와 React.js 활용하는 방법으로는 가장 대표적인 방법이 **Django Restful API backend** 와 **React.js frontend** 의 철저 분리 및 연결방식 활용 합니다.
 
@@ -29,9 +29,9 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
 1. react
 1. react-hot-loader
 
-# **Setting & Installation**
+## **Setting & Installation**
 
-## **Install Django & Webpack by Yarn**
+### **Install Django & Webpack by Yarn**
 
 2020년 4월에 작성하는 문서로써, React.js 가 16 이후부터 안정화 단계에 들어온 만큼 **yarn** 을 사용하여 모듈을 설치하는 내용으로 정리 하였습니다. Vue.js 등은 **[stackoverflow](https://stackoverflow.com/questions/33628558/vue-js-change-tags)** 내용을 참고하면 좋습니다.
 
@@ -64,9 +64,9 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
 ~/mysite/static $ yarn add webpack webpack-cli
 ```
 
-# **Building & Configuration**
+## **Building & Configuration**
 
-## **Package.Json**
+### **Package.Json**
 
 `$ yarn init` 를 실행하면 **Node.js** 모듈이 설치 됩니다. 설정 내용은 **package.json** 에 기록되어 있습니다.
 
@@ -84,7 +84,7 @@ webpack 을 사용한 build 파일을 만들기 위한 **$ yarn build** 의 실�
 }
 ```
 
-## **Webpack.Setting.Js**
+### **Webpack.Setting.Js**
 
 **build** 파일을 만들기 위한 실행 내용은 아래의 내용과 같이 상세하게 서술할 수도 있습니다. 실행을 위해서는 1개만 입력되어 있으면 됩니다. 
 
@@ -97,6 +97,12 @@ webpack 을 사용한 build 파일을 만들기 위한 **$ yarn build** 의 실�
 
 ```r
 ~/mysite/static $ yarn build
+yarn run v1.21.1
+Built at: 2020-04-10 7:29:34 PM
+  Asset      Size  Chunks             Chunk Names
+main.js  3.98 KiB    main  [emitted]  main
+Done in 0.38s.
+
 ~/mysite/static $ tree -d -L 3           
 .
 ├── app
