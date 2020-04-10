@@ -7,6 +7,8 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
   <figcaption></figcaption>
 </figure>
 
+<br/>
+
 ## **Django & webpack**
 
 ### **Introduction**
@@ -29,9 +31,11 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
 1. react
 1. react-hot-loader
 
+<br/>
+
 ## **Setting & Installation**
 
-### **Install Django & Webpack by Yarn**
+### **Install & Coding the Django**
 
 2020년 4월에 작성하는 문서로써, React.js 가 16 이후부터 안정화 단계에 들어온 만큼 **yarn** 을 사용하여 모듈을 설치하는 내용으로 정리 하였습니다. Vue.js 등은 **[stackoverflow](https://stackoverflow.com/questions/33628558/vue-js-change-tags)** 내용을 참고하면 좋습니다.
 
@@ -53,6 +57,17 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
     └── js
 ```
 
+`./manage.py runserver` 에서 실행 가능한 **static 설정** 을 추가 합니다.
+
+```python
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+```
+
+### **Install Webpack by Yarn**
+
 **Django** 를 설치한 뒤 **Yarn** 을 사용하여 환경설정 및 **[Webpack](https://webpack.js.org/guides/installation/)** 을 설치 합니다.
 
 ```r
@@ -63,6 +78,8 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
 # webpack 모듈의 설치
 ~/mysite/static $ yarn add webpack webpack-cli
 ```
+
+<br/>
 
 ## **Building & Configuration**
 
@@ -84,7 +101,7 @@ webpack 을 사용한 build 파일을 만들기 위한 **$ yarn build** 의 실�
 }
 ```
 
-### **Webpack.Setting.Js**
+### **Webpack Build Scripts**
 
 **build** 파일을 만들기 위한 실행 내용은 아래의 내용과 같이 상세하게 서술할 수도 있습니다. 실행을 위해서는 1개만 입력되어 있으면 됩니다. 
 
@@ -93,14 +110,74 @@ webpack 을 사용한 build 파일을 만들기 위한 **$ yarn build** 의 실�
 "build": "webpack --config webpack.config.js"
 ```
 
-빌드하는 파일에 대해서는 **webpack.config.js** 에서 내용을 정의하면 됩니다. 이 파일은 **Webpack** 의 설정 파일이고, 내용 작성에 있어서 주의할 점 몇가지를 유념해야 합니다. 구체적으로는 **주석을 포함하면 안되고**, 경로는 `./js/index.js` 와 같이 **상대경로를 사용** 해야 한다는 점 등이 있습니다.
+빌드하는 파일에 대해서는 **webpack.config.js** 에서 내용을 정의하면 됩니다. 이 파일은 **Webpack** 의 설정 파일이고, 내용 작성에 있어서 주의할 점 몇가지를 유념해야 합니다. 구체적으로는 주석은 `{* *}` 을 사용하고, 경로는 `./js/index.js` 와 같이 **상대경로를 사용** 해야 한다는 점 등이 있습니다.
+
+### **yarn add -D  모듈이름**
 
 ```r
+~/mysite/static $ yarn add -D react react-dom prop-types
+~/mysite/static $ yarn add -D babel-plugin-transform-class-properties
+~/mysite/static $ yarn add -D @babel/core babel-loader @babel/preset-env @babel/preset-react
+
+~/mysite/static $ yarn add -D nodemon
+~/mysite/static $ yarn add -D webpack-dev-server
+~/mysite/static $ yarn add -D style-loader babel-loader react-hot-loader
+~/mysite/static $ yarn add -D @hot-loader/react-dom
+```
+
+### **Webpack.config.js**
+
+필요한 모듈을 설치하였으면 이를 실행하는 설정값들을 추가 합니다.
+
+```r
+module.exports = {
+  mode: 'development',
+  entry: {
+    app: './js/index.js'
+  },
+  output: {
+    filename: '[name].bundle.js',
+    publicPath: 'http://localhost:8080/',
+  },
+  module: {
+    rules: [
+      {  
+       	test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(js|jsx|tsx|ts)?$/,
+        include: /node_modules/,
+        use: ['react-hot-loader/webpack'],
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+	        loader: 'babel-loader',
+	        options: { 
+	          presets: [
+	            '@babel/preset-env',
+	            "@babel/preset-react"
+              ]
+	        }
+	    }
+	  }
+	]
+  },
+  devServer: {
+	headers: {"Access-Control-Allow-Origin":"*"},
+}
+```
+
+
+```r
+# build 를 실행하면 빌드된 내용이 출력됩니다.
 ~/mysite/static $ yarn build
 yarn run v1.21.1
 Built at: 2020-04-10 7:29:34 PM
-  Asset      Size  Chunks             Chunk Names
-main.js  3.98 KiB    main  [emitted]  main
+  Asset    Size       Chunks   Chunk      Names
+  main.js  3.98 KiB   main     [emitted]  main
 Done in 0.38s.
 
 ~/mysite/static $ tree -d -L 3           
@@ -116,3 +193,12 @@ Done in 0.38s.
         ├── @webassemblyjs
         ├── @xtuc
 ```
+
+<br/>
+
+## **React.js**
+
+
+### **Static with Django & Webpack**
+
+### **Package.Json**
