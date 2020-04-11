@@ -212,27 +212,9 @@ STATICFILES_DIRS = [
   <div id="wrapper">
   <h1> / </h1>
   <ul>
-    <li>
-      <a href="/css" class="" title="css">
-        <span class="name">css</span>
-        <span class="size"></span>
-        <span class="date">2020-4-10 3:35:22 PM</span>
-      </a>
-    </li>
-    <li>
-      <a href="/dist" class="" title="dist">
-        <span class="name">dist</span>
-        <span class="size"></span>
-        <span class="date">2020-4-11 4:47:53 PM</span>
-      </a>
-    </li>
-    <li>
-      <a href="/js" class="" title="js">
-        <span class="name">js</span>
-        <span class="size"></span>
-        <span class="date">2020-4-10 3:42:36 PM</span>
-      </a>
-    </li>
+    <li><a href="/css" class="" title="css">css</a></li>
+    <li><a href="/dist" class="" title="dist">dist</a></li>
+    <li><a href="/js" class="" title="js">js</a></li>
 </ul>
 </div>
 </div>
