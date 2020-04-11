@@ -7,7 +7,7 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
   <figcaption></figcaption>
 </figure>
 
-<br/>
+<br/> 
 
 # **Introduction**
 
@@ -258,67 +258,190 @@ Django 서버와 webpack bundle 파일을 연결하여 실행 하면서, 해당 
 
 <br/>
 
-# **HMR**
+## **3 Hot Module Replacement**
 
-## **Package Install & running the Script**
+webpack 에서 지원하는 기능으로 **[정식문서](https://webpack.js.org/concepts/hot-module-replacement/)** 내용을 살펴보면 javascript 모듈이 여러개로 나누어 져 있을때, Full reloading 을 하지 않고, 부분 부분으로 실행을 하는 기능 입니다.
+
+이러한 기능은 **[생산력 향상](https://ibrahimovic.tistory.com/47)** 에 도움을 줍니다. 따라서 우리가 해야할 일은 webpack-dev-server 구성에 추가로 웹팩에 내장된 HMR 플러그인을 사용하는 것 뿐입니다.
+
+## **01 Running the Script with HMR**
+
+실행은 간단합니다. 실행 스크립트 맨 뒤에 `--hot` 를 추가하면 됩니다.
+
 ```r
-~/mysite/static $ yarn add -D react react-dom prop-types
-~/mysite/static $ yarn add -D babel-plugin-transform-class-properties
-~/mysite/static $ yarn add -D @babel/core babel-loader @babel/preset-env @babel/preset-react
+~/mysite/static $ vi package.json
 
-~/mysite/static $ yarn add -D nodemon
-~/mysite/static $ yarn add -D webpack-dev-server
-~/mysite/static $ yarn add -D style-loader babel-loader react-hot-loader
-~/mysite/static $ yarn add -D @hot-loader/react-dom
+  "scripts": {
+    "start": "nodemon -w webpack.config.js -x webpack-dev-server --hot"
+  },
 ```
 
-### **Webpack.config.js**
+## **02 JavaScript**
 
-필요한 모듈을 설치하였으면 이를 실행하는 설정값들을 추가 합니다.
+Hot Module 이 적용될 떄, console 에서는 Warning 메세지들이 출력 됩니다. 실행에는 문제가 있지 않지만 다른 오류를 찾는데 방해가 될 수도 있는만큼 아래의 내용을 개별 script 에 추가를 하면 됩니다. 모든 파일에 다 추가할 필요는 없고, HRM 작업시 빈번하게 수정 작업이 이루어 지는 파일에 추가를 하면 됩니다. <strike>내용은 뜨거우면 뜨거운 대로 동작하면 된다는 내용 입니다.</strike>
+
+```javascript
+if (module.hot) {
+    module.hot.accept();
+}
+```
+
+timer 와 같이 계속적인 변화가 이루어지는 명령같은 경우에는, status 가 여러개가 겹쳐서 실행되는 모습을 볼 수 있습니다. 이는 React 등에서 사용되는 **생명주기별 초기화** 작업이 필요한 경우로써 다음과 같이 상태가 변화시 초기값 지정하는 내용을 추가하면 해결 가능합니다.
+
+```javascript
+const timer = setInterval( () => counter.innerText = ++count, 1000);
+
+if (module.hot) {
+  module.hot.dispose(()=>{
+    clearInterval(timer)
+  });
+  module.hot.accept();
+}
+``` 
+
+## **02 Webpack.Config.Js**
+
+새로고침을 할때마다 Console 에서 오류를 출력합니다. Django 실행 Port 와 Webpack-dev-Server 실행 Port 가 서로 달라서 이를 찾는데 발생하는 오류 입니다. 이러한 문제를 해결하기 위해, Webpack 의 출력포트를 설정 파일에 추가 합니다.
+
+```r
+~/mysite/static $ vi webpack.config.js
+
+module.exports = {
+  output: {
+    ...
+    publicPath: 'http://localhost:8080/'
+  },
+}
+```
+
+작업한 뒤 실행하면 **Access-Control-Allow-Origin** 오류가 당연하게도 발생 합니다. 다른 내용에서는 `pip install django-cors-headers` 를 사용하여 해결 하였지만, 아래의 내용을 Webpack 설정 파일에 추가만 하면 해당 오류는 더이상 발생하지 않습니다. <strike>구분하여 실행하는 방식이 모든 내용을 작업자가 몰라도 가능한 만큼 장단점이 존재 합니다.</strike>
+
+```r
+~/mysite/static $ vi webpack.config.js
+
+module.exports = {
+  ...
+  devServer: { headers: { 'Access-Control-Allow-Origin': '*' } }
+}
+```
+
+### **03 HRM in CSS ,Sytle Loader**
+
+bundle 로 압축되는 JavaScript 에 Css 를 추가 하고 실행하면 Webpack 에서 오류가 발생합니다. 
+
+```r
+$ nvim main.js
+import '../css/hello.css';
+
+$ yarn start
+ERROR in ./css/hello.css 1:0
+Module parse failed: Unexpected character '#' (1:0)
+｢wdm｣: Failed to compile.
+```
+
+Node.js 유틸리티인 **loader** 를 설치 및 연결해야 합니다. **loader** 는 `.css, .scss, .ts` 타입의 **non-javascript** 파일을 컴파일 하는 유틸리티 입니다. **[css-loader](https://www.npmjs.com/package/css-loader)** 는 **css** 파일을 찾아 문자열로 정리해주며, **[style-loader](https://www.npmjs.com/package/style-loader)** 는 정리된 문자열을 index.html 파일 내부의 `<style>`태그에 넣어줍니다.
 
 ```r
 module.exports = {
-  mode: 'development',
-  entry: {
-    app: './js/index.js'
-  },
-  output: {
-    filename: '[name].bundle.js',
-    publicPath: 'http://localhost:8080/',
-  },
+  ...
   module: {
     rules: [
-      {  
-       	test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
       {
-        test: /\.(js|jsx|tsx|ts)?$/,
-        include: /node_modules/,
-        use: ['react-hot-loader/webpack'],
-      },
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-	        loader: 'babel-loader',
-	        options: { 
-	          presets: [
-	            '@babel/preset-env',
-	            "@babel/preset-react"
-              ]
-	        }
-	    }
-	  }
-	]
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
   },
-  devServer: {
-	headers: {"Access-Control-Allow-Origin":"*"},
-}
 ```
 
 <br/>
 
-## **React.js**
-### **Static with Django & Webpack**
-### **Package.Json**
+# **Webpack & React.Js**
+
+지금까지 작업한 내용을 살펴보면 다음과 같습니다.
+
+1. Django App Start
+1. Webpack bundle Start
+1. Webpack Hot Reload Module Start
+1. Webpact with CSS
+
+마지막으로 react.js 를 포함하는 방법을 살펴보겠습니다.
+
+<br/>
+
+## **1 babel**
+
+### **01 Install Babel Loader**
+
+JSX 문법을 활용 가능하도록 **[babel loader](https://www.npmjs.com/package/babel-loader)** 유틸리티를 설치 합니다. 아래의 내용은 2020년 4월을 기준으로 작성한 내용으로, 작업때 마다 npm 페이지에서 해당 내용을 확인 합니다.
+
+```r
+~/mysite/static $ yarn add -D babel-loader @babel/core @babel/preset-env
+```
+
+### **02 Install @babel/preset-react**
+
+지금까지 작업한 Webpack 과 babel 위에서 React 를 사용하기 위한 추가 유틸리티 설치 및 설정 작업이 필요 합니다. 이 부분은 유사한 종류가 많다보니 문서 작성년도에 따라 활용하는 유틸리티가 다른 경우가 있는만큼 이점에 주의해서 작업을 진행하도록 합니다.
+
+예전 문서에는 **react-loader** 를 사용하는 경우도 있었지만, 지금은 추천 및 사용자가 압도적으로 많은 **[@babel/preset-react](https://www.npmjs.com/package/@babel/preset-react)** 를 사용 합니다.
+
+```r
+~/mysite/static $ yarn add -D @babel/preset-react
+```
+
+### **03 Babel React Preset Setting**
+
+**[Babel 문서](https://babeljs.io/docs/en/babel-preset-react)** 를 참고하면 내부 메서드 등에 대해 상세한 설명을 볼 수 있습니다. 바로 앞에서 설치한 **babel-loader** 와 연결성이 좋은만큼 위에서 설치한 내용과 동일한 설정값에서, options 의 presets 부분에 `"@babel/preset-react"` 을 추가 하면 됩니다.
+
+```r
+~/mysite/static $ vi webpack.config.js
+
+module: {
+  rules: [
+    {
+      test: /\.js?$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'babel-loader',
+        options: { 
+          presets: ['@babel/preset-env', ] }
+      }
+    }
+  ]
+}
+```
+
+작업을 완료한 뒤 build 가 제대로 동작 하는지를 확인 합니다.
+
+<br/>
+
+## **2 React**
+
+### **01 Install React**
+
+작업을 위한 Django, WebPack, Babel 의 작업이 완료 되었습니다. 이제는 이 위에서 **[React](https://www.npmjs.com/package/react)** 와 **[React-dom](https://www.npmjs.com/package/react-dom)** 을 설치하고 작업을 시작 합니다.
+
+```r
+~/mysite/static $ yarn add -D react react-dom
+```
+
+작업을 한 뒤 react 코드를 추가하면 제대로 작동하는 모습을 볼 수 있습니다.
+
+### **02 React hot Loader**
+
+Hot Reload Module 이 React 에는 포함되어 있지 않아서 `[HMR] Cannot apply update. Need to do a full reload!` 경고 메세지가 출력 됩니다. 이에 대응 가능한 [@hot-loader/react-dom](https://www.npmjs.com/package/@hot-loader/react-dom) 대신에 **[react-hot-loader](https://www.npmjs.com/package/react-hot-loader)** 를 추가 합니다.  
+
+```r
+~/mysite/static $ yarn add -D react-hot-loader
+```
+
+그리고 React 코드상에서 export 부분에 hot() 함수로 객체를 감싸면  됩니다.
+
+```php
+import { hot } from 'react-hot-loader/root';
+const App = () => <div>Hello World!</div>;
+
+export default hot(App);
+```
+
+지금까지 완벽하게 Django 와 React.js 를 연결하는 방법을 학습 하였습니다. 여러번 반복하여 보다 안정적이면서 강력한 서비스를 만드는데 기초가 되는 내용이었으면 좋겠습니다.
