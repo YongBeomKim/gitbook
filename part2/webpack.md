@@ -207,8 +207,7 @@ STATICFILES_DIRS = [
 
 설치 및 실행 스크립트를 작성한 뒤, `$ yarn start` 를 실행하면, `http://localhost:8080` 에서 다음과 같이 webpack dev server 가 8080 번 포트에서 실행되는 모습을 볼 수 있습니다.
 
-<html>
-<body class="directory">
+<div>
   <input id="search" type="text" placeholder="Search" autocomplete="off" />
   <div id="wrapper">
   <h1> / </h1>
@@ -234,9 +233,10 @@ STATICFILES_DIRS = [
         <span class="date">2020-4-10 3:42:36 PM</span>
       </a>
     </li>
+</ul>
 </div>
-</body>
-</html>
+</div>
+
 
 ### **Django Setting**
 
@@ -271,6 +271,9 @@ Node.js Monitoring 도구로, 내용의 수정이 있을때 마다 자동으로 
 ```
 
 Django 서버와 webpack bundle 파일을 연결하여 실행을 하면서, 해당 내용이 변경시 제대로 동작을 하는지 확인 합니다.
+
+
+
 
 ### **Package Install & running the Script**
 
