@@ -162,7 +162,6 @@ Done in 0.40s.
         ├── @webassemblyjs
         ├── @xtuc
 ```
-```
 
 build 로 생성된 bundle 파일은 Django 의 `settings.py` 에서 Static 설정값에 './dist' 경로를 추가 합니다.
 
@@ -191,12 +190,18 @@ STATICFILES_DIRS = [
 
 ## **1 Webpack Dev Server**
 
+### **Package Install & running the Script**
+
+웹팩 dev server 를 설치 한 뒤 실행하는 과정 입니다.
+
 ```r
 # dev-server 설치 후 package.json 에 실행 스크립트 추가
 ~/mysite/static $ yarn add -D webpack-dev-server
+
+# dev server 실행 스크립트 추가
 ~/mysite/static $ vi package.json
   "scripts": {
-    "start": "webpack-dev-server"  # dev server 실행 스크립트 추가
+    "start": "webpack-dev-server"  
   },
 ```
 
@@ -232,6 +237,42 @@ STATICFILES_DIRS = [
 </div>
 </body>
 </html>
+
+### **Django Setting**
+
+위에서 살펴본 대로 static 연결경로가 `http://localhost:8080` 에 1개 더 추가가 되었습니다. 여기서 실행내용을 Test 해 보려면 `settings.py` 에서 다음과 같이 내용을 변경 합니다.
+
+```python
+STATIC_URL = 'http://localhost:8080/'
+STATICFILES_DIRS = [
+    'dist',
+]
+```
+
+<br/>
+
+## **2 Nodemon**
+
+Node.js Monitoring 도구로, 내용의 수정이 있을때 마다 자동으로 재실행 하는 모듈 입니다. 
+
+> nodemon -w webpack.config.js -x webpack-dev-server
+
+실행 스크립트를 설명하면, `-w: watch`, `-x: excutive` 설정 입니다. 자세한 내용은 다음의 **[npm nodemon post](https://www.npmjs.com/package/nodemon)** 를 참고 합니다.
+
+```r
+~/mysite/static $ yarn add -D nodemon
+~/mysite/static $ vi package.json
+
+  "scripts": {
+    "start": "nodemon -w webpack.config.js -x webpack-dev-server"
+  },
+
+~/mysite/static $ yarn start
+```
+
+Django 서버와 webpack bundle 파일을 연결하여 실행을 하면서, 해당 내용이 변경시 제대로 동작을 하는지 확인 합니다.
+
+### **Package Install & running the Script**
 
 
 # package.json 에 Node.js 스크립트 추가
