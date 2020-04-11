@@ -9,9 +9,7 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
 
 <br/>
 
-## **Django & webpack**
-
-### **Introduction**
+# **Introduction**
 
 **React.js 를 포함하는 Django Project 환경구성** 이 이번의 목표 입니다. Django 와 React.js 활용하는 방법으로는 가장 대표적인 방법이 **Django Restful API backend** 와 **React.js frontend** 의 철저 분리 및 연결방식 활용 합니다.
 
@@ -33,7 +31,11 @@ description: Django 작업에서 설정에 기본적인 webpack 내용을 정리
 
 <br/>
 
-## **Setting & Installation**
+# **Django & Webpack bundle JavaScript**
+
+Django 의 Static 폴더에서 사용하는 Js, CSS 작업 내용의 연결을, Webpack 을 사용하여 **bundle** 파일을 활용하면 **Node Package Manager** 모듈을 활용 할 수 있습니다. 첫번째로는 **Django 에서 Webpack** 의 연결과, **bundle 로 압축된 파일을 Django Template 에서 활용** 가능한 Tutorial 로써 배포 단계에서는 **Django 의 서버** 만으로도 모든 기능이 구현 가능합니다.
+
+## **1 Setting & Installation**
 
 ### **Install & Coding the Django**
 
@@ -91,7 +93,7 @@ STATICFILES_DIRS = [
 
 <br/>
 
-## **Building & Configuration**
+## **2 Building & Configuration**
 
 ### **Package.Json**
 
@@ -183,9 +185,58 @@ STATICFILES_DIRS = [
 
 <br/>
 
-## **Adding the JavaScript Node Modules**
+# **Hot Reloaded Webpack Dev Server**
 
-### **Install Node Modules**
+앞에서 작업한 내용을 정리하면, Webpack 의 번들 파일로 압축한 뒤에야만 배포 단계에서 작동 내용을 확인 할 수 있습니다. 빈번한 수정 작업시에는 매우 귀찮은 과정을 중간에 계속 필요로 하는데, 이러한 문제에서 고안된 기능이 **Hot Reloaded Mode** 에서 작동하는 **Dev Server** 입니다.
+
+## **1 Webpack Dev Server**
+
+```r
+# dev-server 설치 후 package.json 에 실행 스크립트 추가
+~/mysite/static $ yarn add -D webpack-dev-server
+~/mysite/static $ vi package.json
+  "scripts": {
+    "start": "webpack-dev-server"  # dev server 실행 스크립트 추가
+  },
+```
+
+설치 및 실행 스크립트를 작성한 뒤, `$ yarn start` 를 실행하면, `http://localhost:8080` 에서 다음과 같이 webpack dev server 가 8080 번 포트에서 실행되는 모습을 볼 수 있습니다.
+
+<html>
+<body class="directory">
+  <input id="search" type="text" placeholder="Search" autocomplete="off" />
+  <div id="wrapper">
+  <h1> / </h1>
+  <ul>
+    <li>
+      <a href="/css" class="" title="css">
+        <span class="name">css</span>
+        <span class="size"></span>
+        <span class="date">2020-4-10 3:35:22 PM</span>
+      </a>
+    </li>
+    <li>
+      <a href="/dist" class="" title="dist">
+        <span class="name">dist</span>
+        <span class="size"></span>
+        <span class="date">2020-4-11 4:47:53 PM</span>
+      </a>
+    </li>
+    <li>
+      <a href="/js" class="" title="js">
+        <span class="name">js</span>
+        <span class="size"></span>
+        <span class="date">2020-4-10 3:42:36 PM</span>
+      </a>
+    </li>
+</div>
+</body>
+</html>
+
+
+# package.json 에 Node.js 스크립트 추가
+
+
 
 ```r
 ~/mysite/static $ yarn add -D react react-dom prop-types
