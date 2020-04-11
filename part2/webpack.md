@@ -37,7 +37,7 @@ Django 의 Static 폴더에서 사용하는 Js, CSS 작업 내용의 연결을, 
 
 ## **1 Setting & Installation**
 
-### **Install & Coding the Django**
+### **01 Install & Coding the Django**
 
 2020년 4월에 작성하는 문서로써, React.js 가 16 이후부터 안정화 단계에 들어온 만큼 **yarn** 을 사용하여 모듈을 설치하는 내용으로 정리 하였습니다. Vue.js 등은 **[stackoverflow](https://stackoverflow.com/questions/33628558/vue-js-change-tags)** 내용을 참고하면 좋습니다.
 
@@ -68,7 +68,7 @@ STATICFILES_DIRS = [
 ]
 ```
 
-### **Install Webpack by Yarn**
+### **02 Install Webpack by Yarn**
 
 **Django** 를 설치한 뒤 **Yarn** 을 사용하여 환경설정 및 **[Webpack](https://webpack.js.org/guides/installation/)** 을 설치 합니다.
 
@@ -95,7 +95,7 @@ STATICFILES_DIRS = [
 
 ## **2 Building & Configuration**
 
-### **Package.Json**
+### **01 Package.Json**
 
 `$ yarn init` 를 실행하면 **Node.js** 모듈이 설치 됩니다. 설정 내용은 **package.json** 에 기록되어 있습니다.
 
@@ -113,7 +113,7 @@ webpack 을 사용한 build 파일을 만들기 위한 **$ yarn build** 의 실�
 }
 ```
 
-### **Webpack Build Scripts**
+### **02 Webpack Build Scripts**
 
 **build** 파일을 만들기 위한 실행 내용은 아래의 내용과 같이 상세하게 서술할 수도 있습니다. 실행을 위해서는 1개만 입력되어 있으면 됩니다. 
 
@@ -122,7 +122,7 @@ webpack 을 사용한 build 파일을 만들기 위한 **$ yarn build** 의 실�
 "build": "webpack --config webpack.config.js"
 ```
 
-### **Webpack.config.js**
+### **03 Webpack.config.js**
 
 Webpack 으로 빌드하는 파일 정보는 **webpack.config.js** 에서 정의 합니다. 이 파일은 **Webpack** 의 설정 파일로 주석은 `{* *}` 을 사용하고, 경로는 `./js/index.js` 와 같이 **상대경로를 사용** 해야 한다는 점 등에 유의 합니다.
 
@@ -184,13 +184,13 @@ STATICFILES_DIRS = [
 
 <br/>
 
-# **Hot Reloaded Webpack Dev Server**
+# **Webpack Dev Server & NodeMon**
 
 앞에서 작업한 내용을 정리하면, Webpack 의 번들 파일로 압축한 뒤에야만 배포 단계에서 작동 내용을 확인 할 수 있습니다. 빈번한 수정 작업시에는 매우 귀찮은 과정을 중간에 계속 필요로 하는데, 이러한 문제에서 고안된 기능이 **Hot Reloaded Mode** 에서 작동하는 **Dev Server** 입니다.
 
 ## **1 Webpack Dev Server**
 
-### **Package Install & running the Script**
+### **01 Package Install & running the Script**
 
 웹팩 dev server 를 설치 한 뒤 실행하는 과정 입니다.
 
@@ -220,7 +220,7 @@ STATICFILES_DIRS = [
 </div>
 
 
-### **Django Setting**
+### **02 Django Setting**
 
 위에서 살펴본 대로 static 연결경로가 `http://localhost:8080` 에 1개 더 추가가 되었습니다. 여기서 실행내용을 Test 해 보려면 `settings.py` 에서 다음과 같이 내용을 변경 합니다.
 
@@ -235,7 +235,9 @@ STATICFILES_DIRS = [
 
 ## **2 Nodemon**
 
-Node.js Monitoring 도구로, 내용의 수정이 있을때 마다 자동으로 재실행 하는 모듈 입니다. 
+**Node.js Monitoring** 도구로, 내용의 수정이 있을때 마다 자동으로 재실행 하는 모듈 입니다. 
+
+### **01 Install & running the Script**
 
 > nodemon -w webpack.config.js -x webpack-dev-server
 
@@ -252,18 +254,13 @@ Node.js Monitoring 도구로, 내용의 수정이 있을때 마다 자동으로 
 ~/mysite/static $ yarn start
 ```
 
-Django 서버와 webpack bundle 파일을 연결하여 실행을 하면서, 해당 내용이 변경시 제대로 동작을 하는지 확인 합니다.
+Django 서버와 webpack bundle 파일을 연결하여 실행 하면서, 해당 내용이 변경시 제대로 동작 하는지를 확인 합니다.
 
+<br/>
 
+# **HMR**
 
-
-### **Package Install & running the Script**
-
-
-# package.json 에 Node.js 스크립트 추가
-
-
-
+## **Package Install & running the Script**
 ```r
 ~/mysite/static $ yarn add -D react react-dom prop-types
 ~/mysite/static $ yarn add -D babel-plugin-transform-class-properties
@@ -320,11 +317,8 @@ module.exports = {
 }
 ```
 
-
 <br/>
 
 ## **React.js**
-
 ### **Static with Django & Webpack**
-
 ### **Package.Json**
